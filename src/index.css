@@ -213,6 +213,26 @@ button:disabled {
   color: #dc2626;
 }
 
+.sources-box {
+  margin-top: 0.85rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
+  color: #334155;
+}
+
+.sources-box p {
+  margin: 0 0 0.35rem;
+}
+
+.sources-box ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.sources-box li {
+  margin: 0.2rem 0;
+}
+
 .metrics {
   display: grid;
   gap: 1rem;

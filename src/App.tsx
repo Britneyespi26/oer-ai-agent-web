@@ -44,7 +44,9 @@ type CourseOption = {
   code: string;
   title: string;
   area: string;
+  term: string;
   sampleSyllabus: string;
+  sourceLinks: Array<{ label: string; url: string }>;
 };
 
 const requiredCourses: CourseOption[] = [
@@ -52,57 +54,137 @@ const requiredCourses: CourseOption[] = [
     code: 'ARTS 1100',
     title: 'Art Appreciation',
     area: 'Arts & English',
+    term: 'Fall 2025',
     sampleSyllabus:
-      'Topics: visual literacy, artistic movements, interpretation, aesthetics, museum studies, critical analysis.',
+      'Survey and theory of art throughout world history focused on analysis of art forms, technical procedures, subject matter, composition, theory, art philosophy, and cultural/social influences. Learning goals include visual literacy, cross-cultural comparison, and oral/written analysis of works of art.',
+    sourceLinks: [
+      {
+        label: 'GGC Simple Syllabus (Fall 2025 section sample)',
+        url: 'https://ggc.simplesyllabus.com/api2/doc-pdf/q4ptpfsk7/2025-Fall-ARTS-1100-Section-11-(81452)-.pdf',
+      },
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=45&coid=11685&print=',
+      },
+    ],
   },
   {
     code: 'ENGL 1101',
     title: 'First Semester Composition',
     area: 'Arts & English',
+    term: 'Spring 2026',
     sampleSyllabus:
-      'Topics: academic writing, revision, rhetoric, argumentation, research methods, source integration.',
+      'Composition course focused on effective writing across contexts with emphasis on exposition, analysis, argumentation, and introductory research skills. Typical modules include writing academically, audience awareness, source integration, MLA, revision, and argumentative writing.',
+    sourceLinks: [
+      {
+        label: 'GGC Simple Syllabus (Spring 2026 section link)',
+        url: 'https://ggc.simplesyllabus.com/ui/locale-redirect?%2Fdoc%2Fh476m5k16%2F2026-Spring-ENGL-1101-Section-41-%2820587%29-%3Fmode=view',
+      },
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=33&coid=5677&print=',
+      },
+    ],
   },
   {
     code: 'ENGL 1102',
     title: 'Secondary Semester Composition',
     area: 'Arts & English',
+    term: 'Fall 2025',
     sampleSyllabus:
-      'Topics: literary analysis, research writing, genre studies, rhetoric, argumentative essays, evidence.',
+      'Composition course advancing beyond ENGL 1101 with stronger emphasis on interpretation, evaluation, and advanced research methods. Typical units include literary analysis, evidence-based argument development, and iterative revision.',
+    sourceLinks: [
+      {
+        label: 'USG eCore syllabus sample (Fall 2025)',
+        url: 'https://ecampus-usg.simplesyllabus.com/api2/doc-pdf/7u40ywv6q/Fall-2025-ENGL-1102-.pdf',
+      },
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=45&coid=11866&print=',
+      },
+    ],
   },
   {
     code: 'HIST 2111',
     title: 'American History 1',
     area: 'History',
+    term: 'Fall 2025',
     sampleSyllabus:
-      'Topics: colonial America, revolution, constitution, social movements, primary source analysis.',
+      'Survey of United States History to the post-Civil War period, including colonial development, revolution, constitutional formation, early republic change, sectional conflict, and historical source interpretation.',
+    sourceLinks: [
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=49&coid=18179&print=',
+      },
+    ],
   },
   {
     code: 'HIST 2112',
     title: 'American History 2',
     area: 'History',
+    term: 'Spring 2026',
     sampleSyllabus:
-      'Topics: reconstruction, industrialization, modern America, civic institutions, historical interpretation.',
+      'Survey of United States History from the post-Civil War era to the present, including reconstruction, industrialization, world wars, civil rights, modern politics, and analysis of historical narratives.',
+    sourceLinks: [
+      {
+        label: 'USG eCore syllabus sample (Spring 2025)',
+        url: 'https://ecampus-usg-sandbox.simplesyllabus.com/api2/doc-pdf/ym74vhiza/Spring-2025-HIST-2112-.pdf',
+      },
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=49&coid=18181&print=',
+      },
+    ],
   },
   {
     code: 'ITEC 1001',
     title: 'Introduction to Computing',
     area: 'Information Technology',
+    term: 'Fall 2025',
     sampleSyllabus:
-      'Topics: computing concepts, problem solving, digital literacy, software tools, ethics, information systems.',
+      'Introduction to computers and applications software. Outcomes include computing evolution, digital ethics, productivity tools, hardware fundamentals, security/privacy, collaboration tools, networking principles, and software system types.',
+    sourceLinks: [
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=37&coid=7777',
+      },
+    ],
   },
   {
     code: 'BIOL 1101K',
     title: 'Intro to Biology 1 with Lab',
     area: 'Biology',
+    term: 'Fall 2025',
     sampleSyllabus:
-      'Topics: cell biology, genetics, lab safety, scientific method, data analysis, evolution fundamentals.',
+      'Part of a two-semester biology sequence for non-science majors with laboratory. Outcomes include cellular-to-organism organization, scientific process, data collection/analysis, and communication of scientific topics with evidence-based reasoning.',
+    sourceLinks: [
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=45&coid=11699',
+      },
+      {
+        label: 'GGC Simple Syllabus (Fall 2025 section link)',
+        url: 'https://ggc.simplesyllabus.com/ui/locale-redirect?%2Fdoc%2F2v7i9de42%2F2025-Fall-BIOL-1101K-Section-13-%2880230%29-%3Fmode=view',
+      },
+    ],
   },
   {
     code: 'BIOL 1102',
     title: 'Introduction to Biology 2',
     area: 'Biology',
+    term: 'Spring 2026',
     sampleSyllabus:
-      'Topics: ecology, biodiversity, organismal biology, physiology, environmental systems, experimentation.',
+      'Second course in the two-semester biology sequence for non-science majors. Outcomes emphasize organism-to-biosphere systems, scientific thinking, data interpretation, global biological issues, and oral/written scientific communication.',
+    sourceLinks: [
+      {
+        label: 'GGC Simple Syllabus (Fall 2025 section link)',
+        url: 'https://ggc.simplesyllabus.com/doc/b3at8dy2c/2025-Fall-BIOL-1102-Section-01-%2880007%29-?mode=view',
+      },
+      {
+        label: 'GGC Catalog Course Description',
+        url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=20&coid=3623',
+      },
+    ],
   },
 ];
 
@@ -235,6 +317,10 @@ function App() {
   const [result, setResult] = useState<SearchResponse | null>(null);
   const [logs, setLogs] = useState<UsageLog[]>(
     JSON.parse(localStorage.getItem('oerUsageLogs') ?? '[]') as UsageLog[],
+  );
+  const selectedCourse = useMemo(
+    () => requiredCourses.find((course) => course.code === selectedCourseCode) ?? defaultCourse,
+    [selectedCourseCode, defaultCourse],
   );
 
   function storeLogs(nextLogs: UsageLog[]) {
@@ -394,7 +480,7 @@ function App() {
             <select value={selectedCourseCode} onChange={(e) => onSelectCourse(e.target.value)}>
               {requiredCourses.map((course) => (
                 <option key={course.code} value={course.code}>
-                  {course.code} - {course.title} ({course.area})
+                  {course.code} - {course.title} ({course.area}, {course.term})
                 </option>
               ))}
             </select>
@@ -425,6 +511,20 @@ function App() {
             </button>
           </div>
         </form>
+        <div className="sources-box">
+          <p>
+            <strong>Course data sources for {selectedCourse.code}:</strong>
+          </p>
+          <ul>
+            {selectedCourse.sourceLinks.map((source) => (
+              <li key={source.url}>
+                <a href={source.url} target="_blank" rel="noreferrer">
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
         {error ? <p className="error">{error}</p> : null}
       </section>
 
