@@ -59,8 +59,8 @@ const requiredCourses: CourseOption[] = [
       'Survey and theory of art throughout world history focused on analysis of art forms, technical procedures, subject matter, composition, theory, art philosophy, and cultural/social influences. Learning goals include visual literacy, cross-cultural comparison, and oral/written analysis of works of art.',
     sourceLinks: [
       {
-        label: 'GGC Simple Syllabus (Fall 2025 section sample)',
-        url: 'https://ggc.simplesyllabus.com/api2/doc-pdf/q4ptpfsk7/2025-Fall-ARTS-1100-Section-11-(81452)-.pdf',
+        label: 'GGC Simple Syllabus Portal (search ARTS 1100)',
+        url: 'https://ggc.simplesyllabus.com',
       },
       {
         label: 'GGC Catalog Course Description',
@@ -77,8 +77,8 @@ const requiredCourses: CourseOption[] = [
       'Composition course focused on effective writing across contexts with emphasis on exposition, analysis, argumentation, and introductory research skills. Typical modules include writing academically, audience awareness, source integration, MLA, revision, and argumentative writing.',
     sourceLinks: [
       {
-        label: 'GGC Simple Syllabus (Spring 2026 section link)',
-        url: 'https://ggc.simplesyllabus.com/ui/locale-redirect?%2Fdoc%2Fh476m5k16%2F2026-Spring-ENGL-1101-Section-41-%2820587%29-%3Fmode=view',
+        label: 'GGC Simple Syllabus Portal (search ENGL 1101)',
+        url: 'https://ggc.simplesyllabus.com',
       },
       {
         label: 'GGC Catalog Course Description',
@@ -95,8 +95,8 @@ const requiredCourses: CourseOption[] = [
       'Composition course advancing beyond ENGL 1101 with stronger emphasis on interpretation, evaluation, and advanced research methods. Typical units include literary analysis, evidence-based argument development, and iterative revision.',
     sourceLinks: [
       {
-        label: 'USG eCore syllabus sample (Fall 2025)',
-        url: 'https://ecampus-usg.simplesyllabus.com/api2/doc-pdf/7u40ywv6q/Fall-2025-ENGL-1102-.pdf',
+        label: 'GGC Simple Syllabus Portal (search ENGL 1102)',
+        url: 'https://ggc.simplesyllabus.com',
       },
       {
         label: 'GGC Catalog Course Description',
@@ -113,6 +113,10 @@ const requiredCourses: CourseOption[] = [
       'Survey of United States History to the post-Civil War period, including colonial development, revolution, constitutional formation, early republic change, sectional conflict, and historical source interpretation.',
     sourceLinks: [
       {
+        label: 'GGC Simple Syllabus Portal (search HIST 2111)',
+        url: 'https://ggc.simplesyllabus.com',
+      },
+      {
         label: 'GGC Catalog Course Description',
         url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=49&coid=18179&print=',
       },
@@ -127,8 +131,8 @@ const requiredCourses: CourseOption[] = [
       'Survey of United States History from the post-Civil War era to the present, including reconstruction, industrialization, world wars, civil rights, modern politics, and analysis of historical narratives.',
     sourceLinks: [
       {
-        label: 'USG eCore syllabus sample (Spring 2025)',
-        url: 'https://ecampus-usg-sandbox.simplesyllabus.com/api2/doc-pdf/ym74vhiza/Spring-2025-HIST-2112-.pdf',
+        label: 'GGC Simple Syllabus Portal (search HIST 2112)',
+        url: 'https://ggc.simplesyllabus.com',
       },
       {
         label: 'GGC Catalog Course Description',
@@ -144,6 +148,10 @@ const requiredCourses: CourseOption[] = [
     sampleSyllabus:
       'Introduction to computers and applications software. Outcomes include computing evolution, digital ethics, productivity tools, hardware fundamentals, security/privacy, collaboration tools, networking principles, and software system types.',
     sourceLinks: [
+      {
+        label: 'GGC Simple Syllabus Portal (search ITEC 1001)',
+        url: 'https://ggc.simplesyllabus.com',
+      },
       {
         label: 'GGC Catalog Course Description',
         url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=37&coid=7777',
@@ -163,8 +171,8 @@ const requiredCourses: CourseOption[] = [
         url: 'https://catalog.ggc.edu/preview_course_nopop.php?catoid=45&coid=11699',
       },
       {
-        label: 'GGC Simple Syllabus (Fall 2025 section link)',
-        url: 'https://ggc.simplesyllabus.com/ui/locale-redirect?%2Fdoc%2F2v7i9de42%2F2025-Fall-BIOL-1101K-Section-13-%2880230%29-%3Fmode=view',
+        label: 'GGC Simple Syllabus Portal (search BIOL 1101K)',
+        url: 'https://ggc.simplesyllabus.com',
       },
     ],
   },
@@ -177,8 +185,8 @@ const requiredCourses: CourseOption[] = [
       'Second course in the two-semester biology sequence for non-science majors. Outcomes emphasize organism-to-biosphere systems, scientific thinking, data interpretation, global biological issues, and oral/written scientific communication.',
     sourceLinks: [
       {
-        label: 'GGC Simple Syllabus (Fall 2025 section link)',
-        url: 'https://ggc.simplesyllabus.com/doc/b3at8dy2c/2025-Fall-BIOL-1102-Section-01-%2880007%29-?mode=view',
+        label: 'GGC Simple Syllabus Portal (search BIOL 1102)',
+        url: 'https://ggc.simplesyllabus.com',
       },
       {
         label: 'GGC Catalog Course Description',
@@ -514,6 +522,10 @@ function App() {
         <div className="sources-box">
           <p>
             <strong>Course data sources for {selectedCourse.code}:</strong>
+          </p>
+          <p className="source-note">
+            Some institution-hosted syllabus pages require a GGC session login. If a direct page
+            fails, open the portal link and search by course code + term.
           </p>
           <ul>
             {selectedCourse.sourceLinks.map((source) => (
