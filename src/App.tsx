@@ -342,16 +342,51 @@ function App() {
 
   return (
     <main className="page">
+      <nav className="top-nav">
+        <div className="brand">
+          <span className="brand-dot" />
+          <span>GGC OER AI Agent</span>
+        </div>
+        <div className="nav-links">
+          <a href="#analyze">Analyze</a>
+          <a href="#results">Results</a>
+          <a href="#logs">Usage Log</a>
+        </div>
+      </nav>
+
       <header className="hero">
         <p className="eyebrow">GGC AI in Curriculum and Pedagogy</p>
-        <h1>OER Discovery Agent</h1>
+        <h1>Find Affordable, High-Quality OER Faster</h1>
         <p className="subtitle">
           Analyze syllabi, extract key topics, and return open-licensed resources from Open ALG and
-          partner libraries scored with the OER quality rubric.
+          partner libraries scored with the GGC OER quality rubric.
         </p>
+        <div className="hero-actions">
+          <a className="hero-cta" href="#analyze">
+            Start Course Analysis
+          </a>
+          <a className="hero-link" href="https://alg.manifoldapp.org" target="_blank" rel="noreferrer">
+            Browse Open ALG
+          </a>
+        </div>
       </header>
 
-      <section className="card form-card">
+      <section className="highlights">
+        <article className="highlight-card">
+          <h3>Syllabus-to-Topics AI</h3>
+          <p>Extracts teaching-relevant concepts from course descriptions and objectives.</p>
+        </article>
+        <article className="highlight-card">
+          <h3>Rubric-Based Evaluation</h3>
+          <p>Scores relevance, licensing, accessibility, adaptability, and quality evidence.</p>
+        </article>
+        <article className="highlight-card">
+          <h3>Transparent Tracking</h3>
+          <p>Publishes searchable usage logs for faculty teams and the OER Working Group.</p>
+        </article>
+      </section>
+
+      <section id="analyze" className="card form-card">
         <h2>Analyze Syllabus</h2>
         <form onSubmit={onAnalyze} className="form-grid">
           <label>
@@ -394,7 +429,7 @@ function App() {
       </section>
 
       {result ? (
-        <section className="results">
+        <section id="results" className="results">
           <div className="card metrics">
             <div>
               <p className="metric-label">Extracted Topics</p>
@@ -457,7 +492,7 @@ function App() {
         </section>
       ) : null}
 
-      <section className="card logs">
+      <section id="logs" className="card logs">
         <h2>Published Usage Log</h2>
         <p>
           Tracks query topics, timestamp, and returned results to help instructors and the Working
