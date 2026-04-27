@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "id": "17af6307-0afa-4419-9798-24770758e663",
+    "timestamp": "2026-04-27T18:35:36.606Z",
+    "courseName": "ENGL 1101 - Composition I",
+    "instructor": "Faculty User",
+    "queryTopics": [
+      "academic",
+      "writing",
+      "revision",
+      "research",
+      "communication",
+      "engl",
+      "1101",
+      "composition",
+      "objectives",
+      "develop",
+      "strategies",
+      "credible"
+    ],
+    "resultCount": 5,
+    "topResult": "Open Writing Practices"
+  },
+  {
+    "id": "1327c44c-fa60-4d75-a08a-e8af6411afd1",
+    "timestamp": "2026-04-27T18:35:35.677Z",
+    "courseName": "ENGL 1101 - Composition I",
+    "instructor": "Faculty User",
+    "queryTopics": [
+      "academic",
+      "writing",
+      "revision",
+      "research",
+      "communication",
+      "engl",
+      "1101",
+      "composition",
+      "objectives",
+      "develop",
+      "strategies",
+      "credible"
+    ],
+    "resultCount": 5,
+    "topResult": "Open Writing Practices"
+  },
+  {
+    "id": "fffeeb92-7ee8-4358-af70-6160a4e93c1a",
+    "timestamp": "2026-04-27T18:35:34.869Z",
+    "courseName": "ENGL 1101 - Composition I",
+    "instructor": "Faculty User",
+    "queryTopics": [
+      "academic",
+      "writing",
+      "revision",
+      "research",
+      "communication",
+      "engl",
+      "1101",
+      "composition",
+      "objectives",
+      "develop",
+      "strategies",
+      "credible"
+    ],
+    "resultCount": 5,
+    "topResult": "Open Writing Practices"
+  }
+]

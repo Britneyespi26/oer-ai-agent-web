@@ -42,14 +42,19 @@ npm start
 
 In production, Express serves the built frontend from `dist`.
 
-## Deploy online (Render example)
+## Deploy to GitHub Pages (`.github.io`)
 
-1. Push this project to GitHub.
-2. Create a new Render **Web Service** connected to your repo.
-3. Use:
-   - Build command: `npm install && npm run build`
-   - Start command: `npm start`
-4. Deploy and use the generated public URL.
+This project is configured for:
+
+`https://britneyespi26.github.io/oer-ai-agent-web/`
+
+Run:
+
+```bash
+npm run deploy
+```
+
+That command builds and publishes `dist` to the `gh-pages` branch.
 
 ## Push to GitHub
 
@@ -61,3 +66,14 @@ git branch -M main
 git remote add origin <your-repo-url>
 git push -u origin main
 ```
+
+## Required course searches included
+
+- ARTS 1100 - Art Appreciation
+- ENGL 1101 - First Semester Composition
+- ENGL 1102 - Secondary Semester Composition
+- HIST 2111 - American History 1
+- HIST 2112 - American History 2
+- ITEC 1001 - Introduction to Computing
+- BIOL 1101K - Intro to Biology 1 with Lab
+- BIOL 1102 - Introduction to Biology 2
