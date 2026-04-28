@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import type { FormEvent } from 'react';
 
 type Recommendation = {
   id: string;
@@ -38,6 +37,12 @@ type UsageLog = {
   queryTopics: string[];
   resultCount: number;
   topResult: string;
+};
+
+type ChatMessage = {
+  id: string;
+  role: 'assistant' | 'user';
+  text: string;
 };
 
 type CourseOption = {
@@ -320,9 +325,17 @@ function App() {
   const [courseName, setCourseName] = useState(`${defaultCourse.code} - ${defaultCourse.title}`);
   const [instructor, setInstructor] = useState('Faculty User');
   const [syllabusText, setSyllabusText] = useState(defaultCourse.sampleSyllabus);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<SearchResponse | null>(null);
+  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      text:
+        'Hi! I can help you find OER for GGC courses. Choose a course chip or type: "Find resources for ENGL 1101".',
+    },
+  ]);
   const [logs, setLogs] = useState<UsageLog[]>(
     JSON.parse(localStorage.getItem('oerUsageLogs') ?? '[]') as UsageLog[],
   );
@@ -375,11 +388,8 @@ function App() {
     setSyllabusText(selected.sampleSyllabus);
   }
 
-  async function onAnalyze(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setLoading(true);
+  function runAnalysis(triggerText: string) {
     setError('');
-
     try {
       if (!syllabusText || syllabusText.trim().length < 25) {
         throw new Error('Please provide more syllabus detail before running analysis.');
@@ -407,6 +417,15 @@ function App() {
         rubricVersion: 'GGC OER Working Group v1 (AI-assisted scoring)',
       };
       setResult(responseData);
+      setChatMessages((previous) => [
+        ...previous,
+        { id: crypto.randomUUID(), role: 'user', text: triggerText },
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          text: `I analyzed ${courseName} and found ${recommendations.length} open-licensed resources. Top match: ${recommendations[0]?.title ?? 'none'}.`,
+        },
+      ]);
 
       const nextLogs: UsageLog[] = [
         {
@@ -427,121 +446,157 @@ function App() {
           ? requestError.message
           : 'Unexpected error while generating recommendations.',
       );
-    } finally {
-      setLoading(false);
+      setChatMessages((previous) => [
+        ...previous,
+        { id: crypto.randomUUID(), role: 'assistant', text: 'I could not run analysis. Please add more syllabus detail and try again.' },
+      ]);
     }
+  }
+
+  function handleQuickCourse(courseCode: string) {
+    onSelectCourse(courseCode);
+    const selected = requiredCourses.find((course) => course.code === courseCode);
+    if (!selected) {
+      return;
+    }
+    setChatMessages((previous) => [
+      ...previous,
+      { id: crypto.randomUUID(), role: 'user', text: `Use ${selected.code}` },
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text: `Great — I switched to ${selected.code} (${selected.title}, ${selected.term}). Click "Generate Recommendations" when ready.`,
+      },
+    ]);
+  }
+
+  function submitChat() {
+    const input = chatInput.trim();
+    if (!input) {
+      return;
+    }
+    setChatInput('');
+
+    const normalized = input.toLowerCase();
+    const courseMatch = requiredCourses.find((course) =>
+      normalized.includes(course.code.toLowerCase()),
+    );
+
+    if (courseMatch) {
+      onSelectCourse(courseMatch.code);
+      setChatMessages((previous) => [
+        ...previous,
+        { id: crypto.randomUUID(), role: 'user', text: input },
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          text: `I switched the course to ${courseMatch.code}. Want me to generate recommendations now?`,
+        },
+      ]);
+      return;
+    }
+
+    setChatMessages((previous) => [
+      ...previous,
+      { id: crypto.randomUUID(), role: 'user', text: input },
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text:
+          'I can help with: selecting a GGC course, analyzing syllabus text, or filtering to open-license results. Try mentioning a course code like BIOL 1102.',
+      },
+    ]);
   }
 
   const topScore = useMemo(() => result?.recommendations[0]?.rubric.overall ?? 0, [result]);
 
   return (
     <main className="page">
-      <nav className="top-nav">
-        <div className="brand">
-          <span className="brand-dot" />
-          <span>GGC OER AI Agent</span>
-        </div>
-        <div className="nav-links">
-          <a href="#analyze">Analyze</a>
-          <a href="#results">Results</a>
-          <a href="#logs">Usage Log</a>
-        </div>
-      </nav>
-
       <header className="hero">
         <p className="eyebrow">GGC AI in Curriculum and Pedagogy</p>
-        <h1>Find Affordable, High-Quality OER Faster</h1>
+        <h1>OER Discovery Chatbot</h1>
         <p className="subtitle">
-          Analyze syllabi, extract key topics, and return open-licensed resources from Open ALG and
-          partner libraries scored with the GGC OER quality rubric.
+          Chat with the agent to select a course, analyze syllabus topics, and get rubric-scored OER
+          recommendations that are easier for faculty to review.
         </p>
-        <div className="hero-actions">
-          <a className="hero-cta" href="#analyze">
-            Start Course Analysis
-          </a>
-          <a className="hero-link" href="https://alg.manifoldapp.org" target="_blank" rel="noreferrer">
-            Browse Open ALG
-          </a>
-        </div>
       </header>
 
-      <section className="highlights">
-        <article className="highlight-card">
-          <h3>Syllabus-to-Topics AI</h3>
-          <p>Extracts teaching-relevant concepts from course descriptions and objectives.</p>
-        </article>
-        <article className="highlight-card">
-          <h3>Rubric-Based Evaluation</h3>
-          <p>Scores relevance, licensing, accessibility, adaptability, and quality evidence.</p>
-        </article>
-        <article className="highlight-card">
-          <h3>Transparent Tracking</h3>
-          <p>Publishes searchable usage logs for faculty teams and the OER Working Group.</p>
-        </article>
-      </section>
+      <section className="chat-layout">
+        <section className="card chat-panel">
+          <h2>Chat Assistant</h2>
+          <div className="course-chips">
+            {requiredCourses.map((course) => (
+              <button key={course.code} type="button" className="chip-btn" onClick={() => handleQuickCourse(course.code)}>
+                {course.code}
+              </button>
+            ))}
+          </div>
+          <div className="chat-window">
+            {chatMessages.map((message) => (
+              <div key={message.id} className={`bubble ${message.role === 'assistant' ? 'assistant' : 'user'}`}>
+                {message.text}
+              </div>
+            ))}
+          </div>
+          <div className="chat-input-row">
+            <input
+              value={chatInput}
+              onChange={(event) => setChatInput(event.target.value)}
+              placeholder='Type: "Find resources for ENGL 1101"'
+            />
+            <button type="button" onClick={submitChat}>
+              Send
+            </button>
+          </div>
+        </section>
 
-      <section id="analyze" className="card form-card">
-        <h2>Analyze Syllabus</h2>
-        <form onSubmit={onAnalyze} className="form-grid">
+        <section className="card control-panel">
+          <h2>Current Course Context</h2>
           <label>
-            Course Selector (Required Test Courses)
-            <select value={selectedCourseCode} onChange={(e) => onSelectCourse(e.target.value)}>
+            Course
+            <select value={selectedCourseCode} onChange={(event) => onSelectCourse(event.target.value)}>
               {requiredCourses.map((course) => (
                 <option key={course.code} value={course.code}>
-                  {course.code} - {course.title} ({course.area}, {course.term})
+                  {course.code} - {course.title} ({course.term})
                 </option>
               ))}
             </select>
           </label>
           <label>
-            Course Name
-            <input value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
+            Instructor
+            <input value={instructor} onChange={(event) => setInstructor(event.target.value)} />
           </label>
           <label>
-            Instructor
-            <input value={instructor} onChange={(e) => setInstructor(e.target.value)} required />
-          </label>
-          <label className="full-width">
-            Syllabus Text
+            Editable Syllabus Context
             <textarea
               value={syllabusText}
-              onChange={(e) => setSyllabusText(e.target.value)}
-              rows={10}
-              required
+              rows={8}
+              onChange={(event) => setSyllabusText(event.target.value)}
             />
           </label>
-          <div className="actions full-width">
-            <button type="submit" disabled={loading}>
-              {loading ? 'Analyzing...' : 'Find OER Recommendations'}
-            </button>
-            <button type="button" onClick={() => onSelectCourse(selectedCourseCode)}>
-              Reload Selected Course Syllabus
-            </button>
+          <button type="button" onClick={() => runAnalysis(`Generate recommendations for ${courseName}`)}>
+            Generate Recommendations
+          </button>
+          <div className="sources-box">
+            <p>
+              <strong>Source links</strong>
+            </p>
+            <ul>
+              {selectedCourse.sourceLinks.map((source) => (
+                <li key={source.url}>
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </form>
-        <div className="sources-box">
-          <p>
-            <strong>Course data sources for {selectedCourse.code}:</strong>
-          </p>
-          <p className="source-note">
-            Some institution-hosted syllabus pages require a GGC session login. If a direct page
-            fails, open the portal link and search by course code + term.
-          </p>
-          <ul>
-            {selectedCourse.sourceLinks.map((source) => (
-              <li key={source.url}>
-                <a href={source.url} target="_blank" rel="noreferrer">
-                  {source.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {error ? <p className="error">{error}</p> : null}
+          {error ? <p className="error">{error}</p> : null}
+        </section>
       </section>
 
       {result ? (
-        <section id="results" className="results">
+        <section className="results">
           <div className="card metrics">
             <div>
               <p className="metric-label">Extracted Topics</p>
