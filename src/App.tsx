@@ -39,12 +39,6 @@ type UsageLog = {
   topResult: string;
 };
 
-type ChatMessage = {
-  id: string;
-  role: 'assistant' | 'user';
-  text: string;
-};
-
 type CourseOption = {
   code: string;
   title: string;
@@ -327,15 +321,6 @@ function App() {
   const [syllabusText, setSyllabusText] = useState(defaultCourse.sampleSyllabus);
   const [error, setError] = useState('');
   const [result, setResult] = useState<SearchResponse | null>(null);
-  const [chatInput, setChatInput] = useState('');
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      id: crypto.randomUUID(),
-      role: 'assistant',
-      text:
-        'Hi! I can help you find OER for GGC courses. Choose a course chip or type: "Find resources for ENGL 1101".',
-    },
-  ]);
   const [logs, setLogs] = useState<UsageLog[]>(
     JSON.parse(localStorage.getItem('oerUsageLogs') ?? '[]') as UsageLog[],
   );
@@ -388,7 +373,7 @@ function App() {
     setSyllabusText(selected.sampleSyllabus);
   }
 
-  function runAnalysis(triggerText: string) {
+  function runAnalysis() {
     setError('');
     try {
       if (!syllabusText || syllabusText.trim().length < 25) {
@@ -417,15 +402,6 @@ function App() {
         rubricVersion: 'GGC OER Working Group v1 (AI-assisted scoring)',
       };
       setResult(responseData);
-      setChatMessages((previous) => [
-        ...previous,
-        { id: crypto.randomUUID(), role: 'user', text: triggerText },
-        {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          text: `I analyzed ${courseName} and found ${recommendations.length} open-licensed resources. Top match: ${recommendations[0]?.title ?? 'none'}.`,
-        },
-      ]);
 
       const nextLogs: UsageLog[] = [
         {
@@ -446,66 +422,7 @@ function App() {
           ? requestError.message
           : 'Unexpected error while generating recommendations.',
       );
-      setChatMessages((previous) => [
-        ...previous,
-        { id: crypto.randomUUID(), role: 'assistant', text: 'I could not run analysis. Please add more syllabus detail and try again.' },
-      ]);
     }
-  }
-
-  function handleQuickCourse(courseCode: string) {
-    onSelectCourse(courseCode);
-    const selected = requiredCourses.find((course) => course.code === courseCode);
-    if (!selected) {
-      return;
-    }
-    setChatMessages((previous) => [
-      ...previous,
-      { id: crypto.randomUUID(), role: 'user', text: `Use ${selected.code}` },
-      {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        text: `Great — I switched to ${selected.code} (${selected.title}, ${selected.term}). Click "Generate Recommendations" when ready.`,
-      },
-    ]);
-  }
-
-  function submitChat() {
-    const input = chatInput.trim();
-    if (!input) {
-      return;
-    }
-    setChatInput('');
-
-    const normalized = input.toLowerCase();
-    const courseMatch = requiredCourses.find((course) =>
-      normalized.includes(course.code.toLowerCase()),
-    );
-
-    if (courseMatch) {
-      onSelectCourse(courseMatch.code);
-      setChatMessages((previous) => [
-        ...previous,
-        { id: crypto.randomUUID(), role: 'user', text: input },
-        {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          text: `I switched the course to ${courseMatch.code}. Want me to generate recommendations now?`,
-        },
-      ]);
-      return;
-    }
-
-    setChatMessages((previous) => [
-      ...previous,
-      { id: crypto.randomUUID(), role: 'user', text: input },
-      {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        text:
-          'I can help with: selecting a GGC course, analyzing syllabus text, or filtering to open-license results. Try mentioning a course code like BIOL 1102.',
-      },
-    ]);
   }
 
   const topScore = useMemo(() => result?.recommendations[0]?.rubric.overall ?? 0, [result]);
@@ -514,44 +431,16 @@ function App() {
     <main className="page">
       <header className="hero">
         <p className="eyebrow">GGC AI in Curriculum and Pedagogy</p>
-        <h1>OER Discovery Chatbot</h1>
+        <h1>OER Discovery Assistant</h1>
         <p className="subtitle">
-          Chat with the agent to select a course, analyze syllabus topics, and get rubric-scored OER
-          recommendations that are easier for faculty to review.
+          Select a GGC course, analyze syllabus context, and get rubric-scored OER recommendations
+          with licensing and classroom integration guidance.
         </p>
       </header>
 
-      <section className="chat-layout">
-        <section className="card chat-panel">
-          <h2>Chat Assistant</h2>
-          <div className="course-chips">
-            {requiredCourses.map((course) => (
-              <button key={course.code} type="button" className="chip-btn" onClick={() => handleQuickCourse(course.code)}>
-                {course.code}
-              </button>
-            ))}
-          </div>
-          <div className="chat-window">
-            {chatMessages.map((message) => (
-              <div key={message.id} className={`bubble ${message.role === 'assistant' ? 'assistant' : 'user'}`}>
-                {message.text}
-              </div>
-            ))}
-          </div>
-          <div className="chat-input-row">
-            <input
-              value={chatInput}
-              onChange={(event) => setChatInput(event.target.value)}
-              placeholder='Type: "Find resources for ENGL 1101"'
-            />
-            <button type="button" onClick={submitChat}>
-              Send
-            </button>
-          </div>
-        </section>
-
-        <section className="card control-panel">
-          <h2>Current Course Context</h2>
+      <section className="card form-card">
+        <h2>Course Analysis</h2>
+        <div className="form-grid">
           <label>
             Course
             <select value={selectedCourseCode} onChange={(event) => onSelectCourse(event.target.value)}>
@@ -566,33 +455,42 @@ function App() {
             Instructor
             <input value={instructor} onChange={(event) => setInstructor(event.target.value)} />
           </label>
-          <label>
-            Editable Syllabus Context
+          <label className="full-width">
+            Course Name
+            <input value={courseName} onChange={(event) => setCourseName(event.target.value)} />
+          </label>
+          <label className="full-width">
+            Syllabus Context
             <textarea
               value={syllabusText}
               rows={8}
               onChange={(event) => setSyllabusText(event.target.value)}
             />
           </label>
-          <button type="button" onClick={() => runAnalysis(`Generate recommendations for ${courseName}`)}>
-            Generate Recommendations
-          </button>
-          <div className="sources-box">
-            <p>
-              <strong>Source links</strong>
-            </p>
-            <ul>
-              {selectedCourse.sourceLinks.map((source) => (
-                <li key={source.url}>
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <div className="actions full-width">
+            <button type="button" onClick={runAnalysis}>
+              Generate Recommendations
+            </button>
+            <button type="button" onClick={() => onSelectCourse(selectedCourseCode)}>
+              Reload Course Context
+            </button>
           </div>
-          {error ? <p className="error">{error}</p> : null}
-        </section>
+        </div>
+        <div className="sources-box">
+          <p>
+            <strong>Source links</strong>
+          </p>
+          <ul>
+            {selectedCourse.sourceLinks.map((source) => (
+              <li key={source.url}>
+                <a href={source.url} target="_blank" rel="noreferrer">
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {error ? <p className="error">{error}</p> : null}
       </section>
 
       {result ? (
