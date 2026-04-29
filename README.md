@@ -2,6 +2,16 @@
 
 AI-powered web application that helps faculty identify open educational resources (OER) that match course topics and learning outcomes.
 
+## How it works (plain language)
+
+1. The instructor selects a course and reviews or edits the syllabus context text.
+2. The app detects the most common meaningful topics in that text.
+3. It compares those topics to an OER catalog and scores each resource with a transparent rubric.
+4. It shows the top matching resources, license details, and classroom use suggestions.
+5. It records a simple usage log (time, course, topics, and number of results) for reporting.
+
+This is a rubric-based scoring assistant designed for explainability. It does not use a hidden black-box ranking model.
+
 ## What this app does
 
 - Accepts syllabus text and course metadata from instructors.
